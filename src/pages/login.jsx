@@ -1,6 +1,16 @@
 import Link from 'next/link'
+import { useContext } from 'react'
+import { useForm } from 'react-hook-form'
+import { AuthContext } from '../contexts/AuthContext'
 
 function Login() {
+    const { register, handleSubmit } = useForm()
+    const { signIn } = useContext(AuthContext)
+
+    async function handleSignIn(data) {
+        await signIn(data)
+    }
+
     return(
         <div className="flex ">
             <div className="w-[50vw] h-[100vh] bg-[url(/images/bg-auth.jpg)] rounded-r-3xl"></div>
@@ -12,9 +22,9 @@ function Login() {
                     </div>
                     <button className="bg-red-500 py-2 w-56 text-white rounded-md mb-6">Google</button>
                     <p className="text-gray-600">ou</p>
-                    <form className="flex flex-col mx-3 my-6 w-96 items-center">
-                        <input type="text" placeholder="Nome de usuário" className="w-full rounded-md mb-3"/>
-                        <input type="password" placeholder="Senha" className="w-full rounded-md mb-1"/>
+                    <form className="flex flex-col mx-3 my-6 w-96 items-center" onSubmit={handleSubmit(handleSignIn)}>
+                        <input {...register('username')} defaultValue="Schwanke" type="text" placeholder="Nome de usuário" className="w-full rounded-md mb-3"/>
+                        <input {...register('password')} defaultValue="mundicoa10" type="password" placeholder="Senha" className="w-full rounded-md mb-1"/>
                         <div className="flex justify-between w-full mb-3">
                             <Link href="/recovery" className="text-sm text-blue-600 cursor-pointer underline underline-offset-2">
                                 Esqueceu usuário ou senha?
