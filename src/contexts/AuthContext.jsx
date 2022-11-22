@@ -6,9 +6,10 @@ import Router from "next/router";
 export const AuthContext = createContext({})
 
 export function AuthProvider({children}) {
-    const [name, setUser] = useState(null)
+    const [userNow, setUserNow] = useState(null)
+    const [userAuth, setUserAuth] = useState({})
 
-    const isAuthenticated = !!name
+    const isAuthenticated = !!userNow
 
     useEffect(() => {
         async function nameUser() {
@@ -16,7 +17,7 @@ export function AuthProvider({children}) {
 
             if(token){
                 const {data: {user}} = await api.post('user', { token })
-                setUser(user.username)           
+                setUserAuth(user)         
             }
         }
 
@@ -30,7 +31,7 @@ export function AuthProvider({children}) {
             maxAge: 60 * 60 * 1 //1 hour
         })
 
-        setUser(user.username)
+        setUserNow(user)
         Router.push('/dashboard')
     }
 
@@ -38,7 +39,8 @@ export function AuthProvider({children}) {
         <AuthContext.Provider value={{
             isAuthenticated,
             signIn,
-            name
+            userNow,
+            userAuth
         }}>
             { children }
         </AuthContext.Provider>
