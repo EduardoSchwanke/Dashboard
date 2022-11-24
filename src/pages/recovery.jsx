@@ -9,7 +9,7 @@ function Auth() {
                     <div className="mb-1">
                         <p className="font-bold text-3xl text-center text-gray-700">Encontre sua conta</p>
                     </div>
-
+ 
                     <form className="flex flex-col mx-3 my-6 w-96 items-center">
                         <input type="email" placeholder="Seu e-mail" className="w-full rounded-md mb-1"/>
                         <div className="flex justify-between w-full mb-5">

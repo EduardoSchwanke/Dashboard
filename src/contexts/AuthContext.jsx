@@ -6,10 +6,16 @@ import Router from "next/router";
 export const AuthContext = createContext({})
 
 export function AuthProvider({children}) {
-    const [userNow, setUserNow] = useState(null)
+    const [userNow, setUserNow] = useState({})
     const [userAuth, setUserAuth] = useState({})
-
+   
     const isAuthenticated = !!userNow
+
+    function SetDarkMode(props) {
+        setCookie(undefined, 'color-mode', props, {
+            maxAge: 60 * 60 * 1 //1 hour
+        })
+    }
 
     useEffect(() => {
         async function nameUser() {
@@ -32,7 +38,24 @@ export function AuthProvider({children}) {
         })
 
         setUserNow(user)
+        setUserAuth(user)
         Router.push('/dashboard')
+    }
+
+    async function signUp({ username, password, email }) {
+        try{
+            const { data: {user} } = await api.post('users', { username, password, email })
+
+            setCookie(undefined, 'dashboard.token', user._id, {
+                maxAge: 60 * 60 * 1 //1 hour
+            })
+    
+            setUserNow(user)
+            setUserAuth(user)
+            Router.push('/dashboard')
+        }catch(err){
+            return alert('usuario ou email já cadastrado')
+        }
     }
 
     return (
@@ -40,7 +63,9 @@ export function AuthProvider({children}) {
             isAuthenticated,
             signIn,
             userNow,
-            userAuth
+            userAuth,
+            SetDarkMode,
+            signUp
         }}>
             { children }
         </AuthContext.Provider>
