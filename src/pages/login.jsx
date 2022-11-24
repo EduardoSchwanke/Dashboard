@@ -1,5 +1,6 @@
 import { Switch } from '@headlessui/react'
 import Link from 'next/link'
+import { parseCookies } from 'nookies'
 import { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { AuthContext } from '../contexts/AuthContext'
@@ -61,3 +62,20 @@ function Login() {
 }
 
 export default Login
+
+export const getServerSideProps = async (ctx) => {
+    const { 'dashboard.token': token } = parseCookies(ctx)
+
+    if(token){
+        return{
+            redirect: {
+                destination: '/dashboard',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {}
+    }
+}
