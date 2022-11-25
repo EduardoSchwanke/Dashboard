@@ -7,7 +7,7 @@ import { AuthContext } from '../contexts/AuthContext'
 
 function Login() {
     const { register, handleSubmit } = useForm()
-    const { signIn } = useContext(AuthContext)
+    const { signIn, errorLogin } = useContext(AuthContext)
     const [enabled, setEnabled] = useState(false)
 
     async function handleSignIn(data) {
@@ -16,6 +16,7 @@ function Login() {
         }
         await signIn(data)
     }
+
 
     return(
         <div className="flex dark:bg-slate-700">
@@ -43,8 +44,14 @@ function Login() {
                     <button className="bg-red-500 py-2 w-56 text-white rounded-md mb-6">Google</button>
                     <p className="text-gray-600 dark:text-white">ou</p>
                     <form className="flex flex-col mx-3 my-6 w-96 items-center" onSubmit={handleSubmit(handleSignIn)}>
-                        <input {...register('username')} defaultValue="Schwanke" type="text" placeholder="Nome de usuário" className="w-full rounded-md mb-3"/>
-                        <input {...register('password')} defaultValue="mundicoa10" type="password" placeholder="Senha" className="w-full rounded-md mb-1"/>
+                        
+                        {!errorLogin ? '' : 
+                            <div className={`w-full p-2 mb-3 border border-red-600 text-red-600 text-center`}>
+                                Nome de usuário ou senha invalidos!
+                            </div>}
+
+                        <input {...register('username')} required defaultValue="Schwanke" type="text" placeholder="Nome de usuário" className="w-full rounded-md mb-3"/>
+                        <input {...register('password')} required defaultValue="mundicoa10" type="password" placeholder="Senha" className="w-full rounded-md mb-1"/>
                         <div className="flex justify-between w-full mb-3">
                             <Link href="/recovery" className="text-sm text-blue-600 cursor-pointer underline underline-offset-2 dark:text-blue-400">
                                 Esqueceu usuário ou senha?

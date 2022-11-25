@@ -6,10 +6,11 @@ import Router from "next/router";
 export const AuthContext = createContext({})
 
 export function AuthProvider({children}) {
-    const [userNow, setUserNow] = useState({})
     const [userAuth, setUserAuth] = useState({})
+    const [errorLogin, setErrorLogin] = useState(false)
+    const [errorSignup, setErrorSignup] = useState(false)
    
-    const isAuthenticated = !!userNow
+    const isAuthenticated = !!userAuth
 
     useEffect(() => {
         async function nameUser() {
@@ -25,15 +26,18 @@ export function AuthProvider({children}) {
     }, [])
 
     async function signIn({ username, password }) {
-        const { data: {user} } = await api.post('login', { username, password })
+        try{
+            const { data: {user} } = await api.post('login', { username, password })
 
-        setCookie(undefined, 'dashboard.token', user._id, {
-            maxAge: 60 * 60 * 1 //1 hour
-        })
-
-        setUserNow(user)
-        setUserAuth(user)
-        Router.push('/dashboard')
+            setCookie(undefined, 'dashboard.token', user._id, {
+                maxAge: 60 * 60 * 1 //1 hour
+            })
+            setErrorLogin(false)
+            setUserAuth(user)
+            Router.push('/dashboard')
+        }catch(err){
+            setErrorLogin(true)
+        }
     }
 
     async function signUp({ username, password, email }) {
@@ -44,11 +48,11 @@ export function AuthProvider({children}) {
                 maxAge: 60 * 60 * 24 // 24 hours
             })
     
-            setUserNow(user)
+            setErrorSignup(false)
             setUserAuth(user)
             Router.push('/dashboard')
         }catch(err){
-            return alert('usuario ou email já cadastrado')
+            setErrorSignup(true)
         }
     }
 
@@ -56,9 +60,10 @@ export function AuthProvider({children}) {
         <AuthContext.Provider value={{
             isAuthenticated,
             signIn,
-            userNow,
             userAuth,
-            signUp
+            signUp,
+            errorLogin,
+            errorSignup
         }}>
             { children }
         </AuthContext.Provider>
