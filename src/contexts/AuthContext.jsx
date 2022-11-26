@@ -56,6 +56,17 @@ export function AuthProvider({children}) {
         }
     }
 
+    async function sendMail({ email }) {
+        try{
+            await api.post('forgot_password', { email })
+
+            alert('check seu email')
+        }catch(err){
+            alert('error')
+        }
+    }
+
+
     return (
         <AuthContext.Provider value={{
             isAuthenticated,
@@ -63,7 +74,8 @@ export function AuthProvider({children}) {
             userAuth,
             signUp,
             errorLogin,
-            errorSignup
+            errorSignup,
+            sendMail
         }}>
             { children }
         </AuthContext.Provider>
