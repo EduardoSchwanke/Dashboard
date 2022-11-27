@@ -3,20 +3,24 @@ import Link from 'next/link'
 import { parseCookies } from 'nookies'
 import { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { AuthContext } from '../contexts/AuthContext'
 
 function Login() {
     const { register, handleSubmit } = useForm()
     const { signIn, errorLogin } = useContext(AuthContext)
     const [enabled, setEnabled] = useState(false)
-
+    const [formName, setFormName] = useState(false)
+    const [formPassword, setFormPassword] = useState(false)
+    const [showPassword, setShowPassword] = useState('password')
+    const [password, setPassword] = useState('')
+ 
     async function handleSignIn(data) {
-        if(!data.username || !data.password){
-            return alert('Informe senha e nome de usuario!')
+        if(!data.password){
+            data.password = password
         }
         await signIn(data)
     }
-
 
     return(
         <div className="flex dark:bg-slate-700">
@@ -50,8 +54,47 @@ function Login() {
                                 Nome de usuário ou senha invalidos!
                             </div>}
 
-                        <input {...register('username')} required defaultValue="Schwanke" type="text" placeholder="Nome de usuário" className="w-full rounded-md mb-3"/>
-                        <input {...register('password')} required defaultValue="mundicoa10" type="password" placeholder="Senha" className="w-full rounded-md mb-1"/>
+                        <div className='relative w-full group'>
+                            <label htmlFor="username" className={`text-gray-600 absolute top-3 mx-3 px-1 bg-white cursor-text group-focus-within:text-xs group-focus-within:-top-[10px] transition-all ${formName ? 'text-xs -top-[10px]' : ''}`}>Nome de usuário</label>
+                            <input {...register('username')} onChange={(props) => {
+                                if(props.target.value.length >= 1){
+                                    setFormName(true)
+                                }else{
+                                    setFormName(false)
+                                }
+                            }} required type="text" id='username' className="w-full h-12 rounded-md mb-4"/>
+                        </div>
+                        <div className='relative w-full group'>
+                            <label htmlFor="password" className={`text-gray-600 absolute top-3 mx-3 px-1 bg-white cursor-text group-focus-within:text-xs group-focus-within:-top-[10px] transition-all ${formPassword ? 'text-xs -top-[10px]' : ''}`}>Senha</label>
+                            <input {...register('password')} onChange={(props) => {
+                                setPassword(props.target.value)
+
+                                if(props.target.value.length >= 1){
+                                    setFormPassword(true)
+                                }else{
+                                    setFormPassword(false)
+                                }
+                            }} required type={showPassword} id='password' className="w-full h-12 rounded-md mb-1"/>
+                            {
+                                (showPassword === 'password') ? <AiOutlineEye onClick={() => {
+                                    if(showPassword === 'password'){
+                                        setShowPassword('text')
+                                    }else{
+                                        setShowPassword('password')
+                                    }
+                                }} 
+                                className='absolute top-[13px] right-1 p-1 text-[1.6rem] cursor-pointer'
+                                /> : <AiOutlineEyeInvisible onClick={() => {
+                                    if(showPassword === 'password'){
+                                        setShowPassword('text')
+                                    }else{
+                                        setShowPassword('password')
+                                    }
+                                }} 
+                                className='absolute top-[13px] right-1 p-1 text-[1.6rem] cursor-pointer'
+                                />
+                            }
+                        </div>
                         <div className="flex justify-between w-full mb-3">
                             <Link href="/recovery" className="text-sm text-blue-600 cursor-pointer underline underline-offset-2 dark:text-blue-400">
                                 Esqueceu usuário ou senha?

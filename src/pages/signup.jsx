@@ -9,13 +9,17 @@ function Login() {
     const { register, handleSubmit } = useForm()
     const { signUp, errorSignup } = useContext(AuthContext)
     const [formPassword, setFormPassword] = useState('password')
+    const [formName, setFormName] = useState(false)
+    const [formEmail, setFormEmail] = useState(false)
+    const [password, setPassword] = useState(false)
+    const [pass, setPass] = useState('')
 
     async function handleSignUp(data) {
-        if(!data.username || !data.password || !data.email){
-            return alert('Informe todos os campos')
+        if(!data.password){
+            data.password = pass
         }
         await signUp(data)
-    }
+    } 
     return(
         <div className="flex ">
             <div className="w-[50vw] h-[100vh] bg-[url(/images/bg-auth.jpg)] rounded-r-3xl"></div>
@@ -29,10 +33,37 @@ function Login() {
                             <div className={`w-full p-2 mb-3 border border-red-600 text-red-600 text-center`}>
                                 Nome de usuário ou email já cadastrado!
                             </div>}
-                        <input {...register('username')} required defaultValue="Schwanke" type="text" placeholder="Nome de usuário" className="w-full rounded-md mb-3"/>
-                        <input {...register('email')} required defaultValue="carvalhoe089@gmail.com"type="email" placeholder="Seu e-mail" className="w-full rounded-md mb-3"/>
-                        <div className="relative w-full">
-                            <input {...register('password')} required defaultValue="mundicoa10" type={formPassword} placeholder="Senha" className="w-full rounded-md mb-3"/>
+                        <div className='relative w-full group'>
+                            <label htmlFor="username" className={`text-gray-600 absolute top-3 mx-3 px-1 bg-white cursor-text group-focus-within:text-xs group-focus-within:-top-[10px] transition-all ${formName ? 'text-xs -top-[10px]' : ''}`}>Nome de usuário</label>
+                            <input {...register('username')} onChange={(props) => {
+                                if(props.target.value.length >= 1){
+                                    setFormName(true)
+                                }else{
+                                    setFormName(false)
+                                }
+                            }} required type="text" id='username' min='1' className="w-full h-12 rounded-md mb-4"/>
+                        </div>
+                        <div className='relative w-full group'>
+                            <label htmlFor="email" className={`text-gray-600 absolute top-3 mx-3 px-1 bg-white cursor-text group-focus-within:text-xs group-focus-within:-top-[10px] transition-all ${formEmail ? 'text-xs -top-[10px]' : ''}`}>Email da sua conta</label>
+                            <input {...register('email')} onChange={(props) => {
+                                if(props.target.value.length >= 1){
+                                    setFormEmail(true)
+                                }else{
+                                    setFormEmail(false)
+                                }
+                            }} required type="email" id='email' className="w-full h-12 rounded-md mb-4"/>
+                        </div>
+    
+                        <div className="relative w-full group">
+                            <label htmlFor="password" className={`text-gray-600 absolute top-3 mx-3 px-1 bg-white cursor-text group-focus-within:text-xs group-focus-within:-top-[10px] transition-all ${password ? 'text-xs -top-[10px]' : ''}`}>Senha</label>
+                            <input {...register('password')} onChange={(props) => {
+                                setPass(props.target.value)
+                                if(props.target.value.length >= 1){
+                                    setPassword(true)
+                                }else{
+                                    setPassword(false)
+                                }
+                            }} required type={formPassword} id='password' min='1' className="w-full h-12 rounded-md mb-1"/>
                             {
                                 (formPassword === 'password') ? <AiOutlineEye onClick={() => {
                                     if(formPassword === 'password'){
@@ -41,7 +72,7 @@ function Login() {
                                         setFormPassword('password')
                                     }
                                 }} 
-                                className='absolute top-[10px] right-1 p-1 text-2xl cursor-pointer'
+                                className='absolute top-[13px] right-1 p-1 text-[1.6rem] cursor-pointer'
                                 /> : <AiOutlineEyeInvisible onClick={() => {
                                     if(formPassword === 'password'){
                                         setFormPassword('text')
@@ -49,7 +80,7 @@ function Login() {
                                         setFormPassword('password')
                                     }
                                 }} 
-                                className='absolute top-[10px] right-1 p-1 text-2xl cursor-pointer'
+                                className='absolute top-[13px] right-1 p-1 text-[1.6rem] cursor-pointer'
                                 />
                             }
                         </div>
