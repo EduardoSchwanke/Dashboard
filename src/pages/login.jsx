@@ -55,8 +55,8 @@ function Login(props) {
 
     return(
         <div className="flex dark:bg-slate-800">
-            <div className="w-[50vw] h-[100vh] bg-[url(/images/bg-auth.jpg)] rounded-r-3xl"></div>
-            <div className="w-[50vw] h-[100vh] flex items-center justify-center">
+            <div className="w-[50vw] h-[100vh] bg-[url(/images/bg-auth.jpg)] rounded-r-3xl lg:w-[40%] md:w-[30%] sm:w-0"></div>
+            <div className="w-[50vw] h-[100vh] flex items-center justify-center lg:w-[60%] md:w-[70%] sm:w-full">
                 <Switch
                     checked={theme == 'dark'}
                     onChange={toggleTheme}
@@ -77,7 +77,7 @@ function Login(props) {
                     </div>
                     <button className="bg-red-500 py-2 w-72 text-white rounded-md mb-6">Sing in with Google</button>
                     <p className="text-gray-600 dark:text-white">ou</p>
-                    <form className="flex flex-col mx-3 my-6 w-96 items-center" onSubmit={handleSubmit(handleSignIn)}>
+                    <form className="flex flex-col mx-3 my-6 w-96 items-center xsm:w-[96%]" onSubmit={handleSubmit(handleSignIn)}>
                         
                         {!errorLogin ? '' : 
                             <div className={`w-full p-2 mb-3 border border-red-600 text-red-600 text-center`}>
@@ -126,10 +126,10 @@ function Login(props) {
                             }
                         </div>
                         <div className="flex justify-between w-full mb-3">
-                            <Link href="/recovery" className="text-sm text-blue-600 cursor-pointer underline underline-offset-2 dark:text-blue-400">
-                                Esqueceu usuário ou senha?
+                            <Link href="/recovery" className="text-sm text-blue-600 cursor-pointer underline underline-offset-2 dark:text-blue-400 xsm:text-[12px]">
+                                Esqueceu usuário/senha?
                             </Link>
-                            <Link href="/signup" className="text-sm text-blue-600 cursor-pointer underline underline-offset-2 dark:text-blue-400">
+                            <Link href="/signup" className="text-sm text-blue-600 cursor-pointer underline underline-offset-2 dark:text-blue-400 xsm:text-[12px]">
                                 Ainda não tem uma conta?
                             </Link>
                         </div>

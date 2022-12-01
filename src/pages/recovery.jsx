@@ -49,8 +49,8 @@ function Auth(props) {
 
     return(
         <div className="flex dark:bg-slate-800">
-            <div className="w-[50vw] h-[100vh] bg-[url(/images/bg-auth.jpg)] rounded-r-3xl"></div>
-            <div className="w-[50vw] h-[100vh] flex items-center justify-center">
+            <div className="w-[50vw] h-[100vh] bg-[url(/images/bg-auth.jpg)] rounded-r-3xl lg:w-[40%] md:w-[30%] sm:w-0"></div>
+            <div className="w-[50vw] h-[100vh] flex items-center justify-center lg:w-[60%] md:w-[70%] sm:w-full">
             <Switch
                     checked={theme == 'dark'}
                     onChange={toggleTheme}
@@ -69,7 +69,7 @@ function Auth(props) {
                         <p className="font-bold text-3xl text-center text-gray-700 dark:text-white">Encontre sua conta</p>
                     </div>
  
-                    <form className="flex flex-col mx-3 my-6 w-96 items-center" onSubmit={handleSubmit(sendEmail)}>
+                    <form className="flex flex-col mx-3 my-6 w-96 items-center xsm:w-[96%]" onSubmit={handleSubmit(sendEmail)}>
                         <div className='relative w-full group'>
                             <label htmlFor="email" className={`text-gray-600 absolute rounded-sm top-3 mx-3 px-1 bg-white cursor-text group-focus-within:text-xs group-focus-within:-top-[10px] transition-all ${formEmail ? 'text-xs -top-[10px]' : ''}`}>Email da sua conta</label>
                             <input {...register('email')} onChange={(props) => {
@@ -86,7 +86,7 @@ function Auth(props) {
                                 Já tem uma conta?
                             </Link>
                             <Link href="/signup" className="text-sm text-blue-600 cursor-pointer underline underline-offset-2 dark:text-blue-400">
-                                Ainda não tem uma conta?
+                                Não tem uma conta?
                             </Link>
                         </div>
                         <input type="submit" value="Buscar" className="bg-blue-500 cursor-pointer py-2 w-56 rounded-md text-white"/>

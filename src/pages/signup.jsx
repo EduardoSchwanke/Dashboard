@@ -55,8 +55,8 @@ function Login(props) {
     }
     return(
         <div className="flex dark:bg-slate-800">
-            <div className="w-[50vw] h-[100vh] bg-[url(/images/bg-auth.jpg)] rounded-r-3xl"></div>
-            <div className="w-[50vw] h-[100vh] flex items-center justify-center">
+            <div className="w-[50vw] h-[100vh] bg-[url(/images/bg-auth.jpg)] rounded-r-3xl lg:w-[40%] md:w-[30%] sm:w-0"></div>
+            <div className="w-[50vw] h-[100vh] flex items-center justify-center lg:w-[60%] md:w-[70%] sm:w-full">
             <Switch
                     checked={theme == 'dark'}
                     onChange={toggleTheme}
@@ -74,7 +74,7 @@ function Login(props) {
                     <div className="mb-1">
                         <p className="py-2 font-bold text-3xl text-center text-gray-700 dark:text-white">Cadastre-se!</p>
                     </div>
-                    <form className="flex flex-col mx-3 my-6 w-96 items-center" onSubmit={handleSubmit(handleSignUp)}>
+                    <form className="flex flex-col mx-3 my-6 w-96 items-center xsm:w-[96%]" onSubmit={handleSubmit(handleSignUp)}>
                         {!errorSignup ? '' : 
                             <div className={`w-full p-2 mb-3 border border-red-600 text-red-600 text-center`}>
                                 Nome de usuário ou email já cadastrado!
