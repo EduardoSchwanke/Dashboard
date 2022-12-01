@@ -1,42 +1,72 @@
 import { Switch } from '@headlessui/react'
 import Link from 'next/link'
-import { parseCookies } from 'nookies'
-import { useContext, useState } from 'react'
+import { parseCookies, setCookie } from 'nookies'
+import { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { AuthContext } from '../contexts/AuthContext'
 
-function Login() {
+function Login(props) {
     const { register, handleSubmit } = useForm()
-    const { signIn, errorLogin } = useContext(AuthContext)
-    const [enabled, setEnabled] = useState(false)
+    const { signIn, errorLogin, setErrorLogin } = useContext(AuthContext)
     const [formName, setFormName] = useState(false)
     const [formPassword, setFormPassword] = useState(false)
     const [showPassword, setShowPassword] = useState('password')
     const [password, setPassword] = useState('')
+    const [theme, setTheme] = useState(() => {
+        if(props.USER_THEME){
+            return props.USER_THEME
+        }else{
+            return 'light'
+        }
+    })
  
     async function handleSignIn(data) {
+        setErrorLogin(false)
         if(!data.password){
             data.password = password
         }
         await signIn(data)
     }
 
+    useEffect(() => {
+        document.documentElement.classList.add(props.USER_THEME);
+    }, [])
+
+    function toggleTheme() {
+        if(theme == 'light'){
+            document.documentElement.classList.remove('light');
+            document.documentElement.classList.add('dark');
+            setCookie(null, 'USER_THEME', 'dark', {
+                maxAge: 60 * 60 * 24,
+                path: '/'
+            })
+            setTheme('dark')
+        }else{
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+            setCookie(null, 'USER_THEME', 'light', {
+                maxAge: 60 * 60 * 24,
+                path: '/'
+            })
+            setTheme('light')
+        }   
+    }
+
     return(
-        <div className="flex dark:bg-slate-700">
+        <div className="flex dark:bg-slate-800">
             <div className="w-[50vw] h-[100vh] bg-[url(/images/bg-auth.jpg)] rounded-r-3xl"></div>
             <div className="w-[50vw] h-[100vh] flex items-center justify-center">
                 <Switch
-                    checked={enabled}
-                    onChange={setEnabled}
-                    className={`${
-                        enabled ? 'bg-blue-600' : 'bg-gray-200'
-                    } absolute top-4 right-4 inline-flex h-6 w-11 items-center rounded-full`}
+                    checked={theme == 'dark'}
+                    onChange={toggleTheme}
+                        className={`${
+                            theme == 'dark' ? 'bg-blue-600' : 'bg-gray-200'
+                        } absolute top-4 right-4 inline-flex h-6 w-11 items-center rounded-full`}
                     >
-                    <span className="sr-only">Enable notifications</span>
                     <span
                         className={`${
-                        enabled ? 'translate-x-6' : 'translate-x-1'
+                            theme == 'light' ? 'translate-x-6' : 'translate-x-1'
                         } inline-block h-4 w-4 transform rounded-full bg-white transition`}
                     />
                 </Switch>
@@ -45,7 +75,7 @@ function Login() {
                         <h2 className="font-bold text-3xl text-center text-gray-700 dark:text-white">Bem vindo!</h2>
                         <p className="py-2 text-sm text-center text-gray-600 dark:text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                     </div>
-                    <button className="bg-red-500 py-2 w-56 text-white rounded-md mb-6">Google</button>
+                    <button className="bg-red-500 py-2 w-72 text-white rounded-md mb-6">Sing in with Google</button>
                     <p className="text-gray-600 dark:text-white">ou</p>
                     <form className="flex flex-col mx-3 my-6 w-96 items-center" onSubmit={handleSubmit(handleSignIn)}>
                         
@@ -55,7 +85,7 @@ function Login() {
                             </div>}
 
                         <div className='relative w-full group'>
-                            <label htmlFor="username" className={`text-gray-600 absolute top-3 mx-3 px-1 bg-white cursor-text group-focus-within:text-xs group-focus-within:-top-[10px] transition-all ${formName ? 'text-xs -top-[10px]' : ''}`}>Nome de usuário</label>
+                            <label htmlFor="username" className={`text-gray-600 absolute rounded-sm top-3 mx-3 px-1 bg-white cursor-text group-focus-within:text-xs group-focus-within:-top-[10px] transition-all ${formName ? 'text-xs -top-[10px]' : ''}`}>Nome de usuário</label>
                             <input {...register('username')} onChange={(props) => {
                                 if(props.target.value.length >= 1){
                                     setFormName(true)
@@ -65,7 +95,7 @@ function Login() {
                             }} required type="text" id='username' className="w-full h-12 rounded-md mb-4"/>
                         </div>
                         <div className='relative w-full group'>
-                            <label htmlFor="password" className={`text-gray-600 absolute top-3 mx-3 px-1 bg-white cursor-text group-focus-within:text-xs group-focus-within:-top-[10px] transition-all ${formPassword ? 'text-xs -top-[10px]' : ''}`}>Senha</label>
+                            <label htmlFor="password" className={`text-gray-600 absolute rounded-sm top-3 mx-3 px-1 bg-white cursor-text group-focus-within:text-xs group-focus-within:-top-[10px] transition-all ${formPassword ? 'text-xs -top-[10px]' : ''}`}>Senha</label>
                             <input {...register('password')} onChange={(props) => {
                                 setPassword(props.target.value)
 
@@ -115,6 +145,7 @@ export default Login
 
 export const getServerSideProps = async (ctx) => {
     const { 'dashboard.token': token } = parseCookies(ctx)
+    const cookies = parseCookies(ctx)
 
     if(token){
         return{
@@ -125,7 +156,17 @@ export const getServerSideProps = async (ctx) => {
         }
     }
 
+    if(!cookies){
+        return{
+            props: {
+
+            }
+        }
+    }
+
     return {
-        props: {}
+        props: {
+            USER_THEME: cookies.USER_THEME
+        }
     }
 }

@@ -1,9 +1,10 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../contexts/AuthContext"
 import { parseCookies, setCookie } from 'nookies'
 import Router from "next/router"
+import { Switch } from "@headlessui/react"
 
-function Dashboard() {
+function Dashboard(props) {
     const { userAuth } = useContext(AuthContext)
     const [menu, setMenu] = useState('left-0')
 
@@ -15,11 +16,43 @@ function Dashboard() {
         Router.push('/login')
     }
 
+    const [theme, setTheme] = useState(() => {
+        if(props.USER_THEME){
+            return props.USER_THEME
+        }else{
+            return 'light'
+        }
+    })
+
+    useEffect(() => {
+        document.documentElement.classList.add(props.USER_THEME);
+    }, [])
+
+    function toggleTheme() {
+        if(theme == 'light'){
+            document.documentElement.classList.remove('light');
+            document.documentElement.classList.add('dark');
+            setCookie(null, 'USER_THEME', 'dark', {
+                maxAge: 60 * 60 * 24,
+                path: '/'
+            })
+            setTheme('dark')
+        }else{
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+            setCookie(null, 'USER_THEME', 'light', {
+                maxAge: 60 * 60 * 24,
+                path: '/'
+            })
+            setTheme('light')
+        }   
+    }
+
     return(
         <div className="h-full w-full">
-            <header className="w-full h-14 bg-blue-800 text-white flex items-center justify-between px-[2%]">
+            <header className="w-full h-14 bg-blue-800 text-white flex items-center justify-between px-[2%] dark:bg-slate-800">
                 <div className="flex gap-3 items-center h-14">
-                    <div className={`flex flex-col gap-1 w-8 cursor-pointer p-1 z-50 absolute transition-all ${menu === 'left-0' ? 'left-80' : 'left-4'}`} 
+                    <div className={`flex flex-col gap-1 w-8 cursor-pointer p-1 z-50 relative transition-all ${menu === 'left-0' ? 'left-80' : 'left-4'}`} 
                         onClick={() => {
                             if(menu === '-left-96'){
                                 setMenu('left-0')
@@ -40,6 +73,19 @@ function Dashboard() {
             </header>
 
             <div className={`w-96 h-[100vh] bg-slate-900 absolute flex flex-col top-0 ${menu} transition-all pt-14`}>
+                <Switch
+                    checked={theme == 'dark'}
+                    onChange={toggleTheme}
+                        className={`${
+                            theme == 'dark' ? 'bg-blue-600' : 'bg-gray-200'
+                        } absolute top-5 left-5 inline-flex h-6 w-11 items-center rounded-full`}
+                    >
+                    <span
+                        className={`${
+                            theme == 'light' ? 'translate-x-6' : 'translate-x-1'
+                        } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                    />
+                </Switch>
                 <div className="w-full flex flex-col items-center mb-8">
                     <div className="w-24 h-24 bg-gray-400 rounded-full mb-2"></div>
                     <p className="text-white">{ userAuth.username }</p>
@@ -84,6 +130,7 @@ export default Dashboard
 
 export const getServerSideProps = async (ctx) => {
     const { 'dashboard.token': token } = parseCookies(ctx)
+    const cookies = parseCookies(ctx)
 
     if(!token){
         return{
@@ -94,7 +141,17 @@ export const getServerSideProps = async (ctx) => {
         }
     }
 
+    if(!cookies){
+        return{
+            props: {
+
+            }
+        }
+    }
+
     return {
-        props: {}
+        props: {
+            USER_THEME: cookies.USER_THEME
+        }
     }
 }

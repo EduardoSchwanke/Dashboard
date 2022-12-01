@@ -5,7 +5,7 @@ import Router from "next/router";
 
 export const AuthContext = createContext({})
 
-export function AuthProvider({children}) {
+export default function AuthProvider({ children }) {
     const [userAuth, setUserAuth] = useState({})
     const [errorLogin, setErrorLogin] = useState(false)
     const [errorSignup, setErrorSignup] = useState(false)
@@ -30,7 +30,7 @@ export function AuthProvider({children}) {
             const { data: {user} } = await api.post('login', { username, password })
 
             setCookie(undefined, 'dashboard.token', user._id, {
-                maxAge: 60 * 60 * 1 //1 hour
+                maxAge: 60 * 60 * 60 // 24 hours
             })
             setErrorLogin(false)
             setUserAuth(user)
@@ -74,7 +74,9 @@ export function AuthProvider({children}) {
             userAuth,
             signUp,
             errorLogin,
+            setErrorLogin,
             errorSignup,
+            setErrorSignup,
             sendMail
         }}>
             { children }
