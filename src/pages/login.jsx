@@ -156,7 +156,7 @@ export const getServerSideProps = async (ctx) => {
         }
     }
 
-    if(!cookies){
+    if(cookies.USER_THEME === undefined){
         return{
             props: {
 

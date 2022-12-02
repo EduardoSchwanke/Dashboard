@@ -3,10 +3,16 @@ import { AuthContext } from "../contexts/AuthContext"
 import { parseCookies, setCookie } from 'nookies'
 import Router from "next/router"
 import { Switch } from "@headlessui/react"
+import { Create } from "../components/Create"
+import { Edit } from "../components/Edit"
+import { YouList } from "../components/YouList"
+import { List } from "../components/List"
+import { Setting } from "../components/setting"
 
 function Dashboard(props) {
     const { userAuth } = useContext(AuthContext)
     const [menu, setMenu] = useState('left-0')
+    const [component, setComponent] = useState('create')
 
     function logout() {
         setCookie(undefined, 'dashboard.token', userAuth._id, {
@@ -47,7 +53,7 @@ function Dashboard(props) {
             setTheme('light')
         }   
     }
-
+    console.log(component)
     return(
         <div className="h-full w-full">
             <header className="w-full h-14 bg-blue-800 text-white flex items-center justify-between px-[2%] dark:bg-slate-800">
@@ -61,7 +67,7 @@ function Dashboard(props) {
                             }
                         }}
                     >
-                        <div className={`w-full h-[1px] bg-white relative transition-all ${menu === 'left-0' ? 'rotate-45 top-1' : 'rotate-0'}`}></div>
+                        <div className={`w-full h-[1px] bg-white relative transition-all ${menu === 'left-0' ? 'rotate-45 top-[5px]' : 'rotate-0'}`}></div>
                         <div className={`w-full h-[1px] bg-white transition-all ${menu === 'left-0' ? 'hidden' : 'block'}`}></div>
                         <div className={`w-full h-[1px] bg-white transition-all ${menu === 'left-0' ? '-rotate-45' : 'rotate-0'}`}></div>
                     </div>
@@ -92,35 +98,49 @@ function Dashboard(props) {
                 </div>
                 
                 <div className="flex flex-col justify-evenly text-white h-[60vh]">
-                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4">
+                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => setComponent('create')}>
                         <p>Create</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
                     </div>
-                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4">
+                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => setComponent('edit')}>
                         <p>Edit</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
                     </div>
-                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4">
+                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => setComponent('youlist')}>
                         <p>You list</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
                     </div>
-                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4">
+                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => setComponent('list')}>
                         <p>List</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
                     </div>
-                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4">
+                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => setComponent('setting')}>
                         <p>Setting</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
                     </div>
-                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4">
-                        <p onClick={logout}>sair</p>
+                    <div onClick={logout} className="cursor-pointer hover:bg-slate-700 px-6 pt-4">
+                        <p >sair</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
                     </div>
                 </div>
             </div>
 
             <section className="w-full h-[calc(100vh-56px)] bg-gray-200 flex items-center justify-center">
-
+                    {
+                        (component === 'create') && <Create/>
+                    }
+                    {
+                        (component === 'edit') && <Edit/>
+                    }
+                    {
+                        (component === 'youlist') && <YouList/>
+                    }
+                    {
+                        (component === 'list') && <List/>
+                    }
+                    {
+                        (component === 'setting') && <Setting/>
+                    }
             </section>
         </div>
     )
