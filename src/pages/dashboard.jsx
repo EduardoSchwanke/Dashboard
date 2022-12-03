@@ -11,7 +11,7 @@ import { Setting } from "../components/setting"
 
 function Dashboard(props) {
     const { userAuth } = useContext(AuthContext)
-    const [menu, setMenu] = useState('left-0')
+    const [menu, setMenu] = useState('-left-96')
     const [component, setComponent] = useState('create')
 
     function logout() {
@@ -53,10 +53,10 @@ function Dashboard(props) {
             setTheme('light')
         }   
     }
-    console.log(component)
+    console.log(userAuth)
     return(
         <div className="h-full w-full">
-            <header className="w-full h-14 bg-blue-800 text-white flex items-center justify-between px-[2%] dark:bg-slate-800">
+            <header className="w-full h-14 bg-blue-800 text-white flex items-center justify-between px-[2%] dark:bg-slate-800 border-b-2 border-blue-900 dark:border-slate-900">
                 <div className="flex gap-3 items-center h-14">
                     <div className={`flex flex-col gap-1 w-8 cursor-pointer p-1 z-50 relative transition-all ${menu === 'left-0' ? 'left-80' : 'left-4'}`} 
                         onClick={() => {
@@ -78,7 +78,7 @@ function Dashboard(props) {
                 </div>
             </header>
 
-            <div className={`w-96 h-[100vh] bg-slate-900 absolute flex flex-col top-0 ${menu} transition-all pt-14`}>
+            <div className={`w-96 h-[100vh] bg-slate-900 absolute flex flex-col top-0 ${menu} transition-all pt-14 z-30`}>
                 <Switch
                     checked={theme == 'dark'}
                     onChange={toggleTheme}
@@ -98,34 +98,49 @@ function Dashboard(props) {
                 </div>
                 
                 <div className="flex flex-col justify-evenly text-white h-[60vh]">
-                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => setComponent('create')}>
+                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => {
+                        setComponent('create') 
+                        setMenu('-left-96')}
+                    }>
                         <p>Create</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
                     </div>
-                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => setComponent('edit')}>
+                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => {
+                        setComponent('edit')
+                        setMenu('-left-96')
+                    }}>
                         <p>Edit</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
                     </div>
-                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => setComponent('youlist')}>
+                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => {
+                        setComponent('youlist')
+                        setMenu('-left-96')
+                    }}>
                         <p>You list</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
                     </div>
-                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => setComponent('list')}>
+                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => {
+                        setComponent('list')
+                        setMenu('-left-96')
+                    }}>
                         <p>List</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
                     </div>
-                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => setComponent('setting')}>
+                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => {
+                        setComponent('setting')
+                        setMenu('-left-96')
+                    }}>
                         <p>Setting</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
                     </div>
                     <div onClick={logout} className="cursor-pointer hover:bg-slate-700 px-6 pt-4">
-                        <p >sair</p>
+                        <p >Sair</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
                     </div>
                 </div>
             </div>
 
-            <section className="w-full h-[calc(100vh-56px)] bg-gray-200 flex items-center justify-center">
+            <section className="w-full min-h-[calc(100vh-56px)] bg-[linear-gradient(45deg,rgb(30,64,175)51%,rgba(235,235,235,1)51%,rgba(235,235,235,1)100%)] flex justify-center z-10 dark:bg-[linear-gradient(45deg,rgb(30,41,59)51%,rgba(235,235,235,1)51%,rgba(235,235,235,1)100%)]">
                     {
                         (component === 'create') && <Create/>
                     }
@@ -142,6 +157,9 @@ function Dashboard(props) {
                         (component === 'setting') && <Setting/>
                     }
             </section>
+            <div className={`w-[100vw] h-[100vh] absolute top-0 left-0 bg-transparent z-20 ${(menu === 'left-0') ? 'flex' : 'hidden'}`} onClick={() => {
+                setMenu('-left-96')
+            }}></div>
         </div>
     )
 }
@@ -161,7 +179,7 @@ export const getServerSideProps = async (ctx) => {
         }
     }
 
-    if(!cookies){
+    if(cookies.USER_THEME === undefined){
         return{
             props: {
 

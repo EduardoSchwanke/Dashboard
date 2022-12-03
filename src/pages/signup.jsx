@@ -49,7 +49,7 @@ function Login(props) {
             setCookie(null, 'USER_THEME', 'light', {
                 maxAge: 60 * 60 * 24,
                 path: '/'
-            })
+            }) 
             setTheme('light')
         }   
     }
