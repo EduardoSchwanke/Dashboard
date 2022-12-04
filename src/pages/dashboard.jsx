@@ -12,7 +12,7 @@ import { Setting } from "../components/setting"
 function Dashboard(props) {
     const { userAuth } = useContext(AuthContext)
     const [menu, setMenu] = useState('-left-96')
-    const [component, setComponent] = useState('create')
+    const [component, setComponent] = useState(props.component_render)
 
     function logout() {
         setCookie(undefined, 'dashboard.token', userAuth._id, {
@@ -53,7 +53,7 @@ function Dashboard(props) {
             setTheme('light')
         }   
     }
-    console.log(userAuth)
+
     return(
         <div className="h-full w-full">
             <header className="w-full h-14 bg-blue-800 text-white flex items-center justify-between px-[2%] dark:bg-slate-800 border-b-2 border-blue-900 dark:border-slate-900">
@@ -100,14 +100,22 @@ function Dashboard(props) {
                 <div className="flex flex-col justify-evenly text-white h-[60vh]">
                     <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => {
                         setComponent('create') 
-                        setMenu('-left-96')}
-                    }>
+                        setMenu('-left-96')
+                        setCookie(null, 'component_render', 'create', {
+                            maxAge: 60 * 60 * 24,
+                            path: '/'
+                        })
+                    }}>
                         <p>Create</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
                     </div>
                     <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => {
                         setComponent('edit')
                         setMenu('-left-96')
+                        setCookie(null, 'component_render', 'edit', {
+                            maxAge: 60 * 60 * 24,
+                            path: '/'
+                        })
                     }}>
                         <p>Edit</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
@@ -115,6 +123,10 @@ function Dashboard(props) {
                     <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => {
                         setComponent('youlist')
                         setMenu('-left-96')
+                        setCookie(null, 'component_render', 'youlist', {
+                            maxAge: 60 * 60 * 24,
+                            path: '/'
+                        })
                     }}>
                         <p>You list</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
@@ -122,6 +134,10 @@ function Dashboard(props) {
                     <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => {
                         setComponent('list')
                         setMenu('-left-96')
+                        setCookie(null, 'component_render', 'list', {
+                            maxAge: 60 * 60 * 24,
+                            path: '/'
+                        })
                     }}>
                         <p>List</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
@@ -129,6 +145,10 @@ function Dashboard(props) {
                     <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => {
                         setComponent('setting')
                         setMenu('-left-96')
+                        setCookie(null, 'component_render', 'setting', {
+                            maxAge: 60 * 60 * 24,
+                            path: '/'
+                        })
                     }}>
                         <p>Setting</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
@@ -189,7 +209,8 @@ export const getServerSideProps = async (ctx) => {
 
     return {
         props: {
-            USER_THEME: cookies.USER_THEME
+            USER_THEME: cookies.USER_THEME,
+            component_render: cookies.component_render
         }
     }
 }

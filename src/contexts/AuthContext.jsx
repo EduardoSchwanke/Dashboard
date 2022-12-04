@@ -25,6 +25,7 @@ export default function AuthProvider({ children }) {
         nameUser()
     }, [])
 
+
     async function signIn({ username, password }) {
         try{
             const { data: {user} } = await api.post('login', { username, password })
@@ -32,6 +33,11 @@ export default function AuthProvider({ children }) {
             setCookie(undefined, 'dashboard.token', user._id, {
                 maxAge: 60 * 60 * 60 // 24 hours
             })
+
+            setCookie(undefined, 'component_render', 'create', {
+                maxAge: 60 * 60 * 60 // 24 hours
+            })
+
             setErrorLogin(false)
             setUserAuth(user)
             Router.push('/dashboard')
@@ -77,7 +83,7 @@ export default function AuthProvider({ children }) {
             setErrorLogin,
             errorSignup,
             setErrorSignup,
-            sendMail
+            sendMail,
         }}>
             { children }
         </AuthContext.Provider>
