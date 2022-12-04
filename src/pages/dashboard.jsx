@@ -56,7 +56,7 @@ function Dashboard(props) {
 
     return(
         <div className="h-full w-full">
-            <header className="w-full h-14 bg-blue-800 text-white flex items-center justify-between px-[2%] dark:bg-slate-800 border-b-2 border-blue-900 dark:border-slate-900">
+            <header className="w-full h-14 text-white flex items-center justify-between px-[2%] bg-slate-800 border-b-2 border-slate-900">
                 <div className="flex gap-3 items-center h-14">
                     <div className={`flex flex-col gap-1 w-8 cursor-pointer p-1 z-50 relative transition-all ${menu === 'left-0' ? 'left-80' : 'left-4'}`} 
                         onClick={() => {
@@ -74,7 +74,7 @@ function Dashboard(props) {
                 </div>
                 <div className="flex items-center gap-3">
                     <p>{ userAuth.username }</p>
-                    <div className="w-9 h-9 rounded-full bg-gray-200"></div>
+                    <div className="w-9 h-9 rounded-full bg-white bg-[url(/images/perfil.png)] bg-cover"></div>
                 </div>
             </header>
 
@@ -93,7 +93,7 @@ function Dashboard(props) {
                     />
                 </Switch>
                 <div className="w-full flex flex-col items-center mb-8">
-                    <div className="w-24 h-24 bg-gray-400 rounded-full mb-2"></div>
+                    <div className="w-24 h-24 bg-white rounded-full mb-2 bg-[url(/images/perfil.png)] bg-cover"></div>
                     <p className="text-white">{ userAuth.username }</p>
                 </div>
                 
@@ -160,7 +160,7 @@ function Dashboard(props) {
                 </div>
             </div>
 
-            <section className="w-full min-h-[calc(100vh-56px)] bg-[linear-gradient(45deg,rgb(30,64,175)51%,rgba(235,235,235,1)51%,rgba(235,235,235,1)100%)] flex justify-center z-10 dark:bg-[linear-gradient(45deg,rgb(30,41,59)51%,rgba(235,235,235,1)51%,rgba(235,235,235,1)100%)]">
+            <section className="w-full min-h-[calc(100vh-56px)] flex justify-center z-10 bg-[linear-gradient(45deg,rgb(30,41,59)51%,rgba(235,235,235,1)51%,rgba(235,235,235,1)100%)]">
                     {
                         (component === 'create') && <Create/>
                     }
@@ -177,7 +177,7 @@ function Dashboard(props) {
                         (component === 'setting') && <Setting/>
                     }
             </section>
-            <div className={`w-[100vw] h-[100vh] absolute top-0 left-0 bg-transparent z-20 ${(menu === 'left-0') ? 'flex' : 'hidden'}`} onClick={() => {
+            <div className={`w-full h-[100vh] absolute top-0 left-0 bg-transparent z-20 ${(menu === 'left-0') ? 'flex' : 'hidden'}`} onClick={() => {
                 setMenu('-left-96')
             }}></div>
         </div>
