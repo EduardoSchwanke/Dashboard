@@ -40,7 +40,7 @@ export function Setting() {
     }
 
     return (
-        <div className="mx-[20%] h-fit mt-12 bg-white w-[800px] p-9 rounded-md shadow-xl mb-44 sm:mx-[4%] sm:mt-3 dark:bg-slate-700">
+        <div className="mx-[20%] h-fit mt-12 bg-white w-[800px] p-9 rounded-md shadow-xl mb-44 mt-24 sm:mx-[4%] sm:mt-3 dark:bg-slate-700">
             <form className="flex flex-col items-center" onSubmit={UpdateUser}>
                 <h1 className="mb-4 text-2xl text-slate-700 dark:text-white">Atualize seu dados</h1>
                 <div className="w-20 h-20 mb-6 rounded-full border-4 border-dashed border-sky-500 border-separate cursor-pointer">
@@ -77,7 +77,7 @@ export function Setting() {
                     />
                 </div>
 
-                <div className="w-full h-20 fixed bottom-0 right-0 bg-white flex items-center justify-end px-7 gap-6 dark:bg-gray-100">
+                <div className="w-full h-20 fixed bottom-0 right-0 bg-gray-100 flex items-center justify-end px-7 gap-6 dark:bg-gray-100">
                     <button className="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition-all" type="button" onClick={() => {
                         window.location.reload()
                     }}>Refresh</button>

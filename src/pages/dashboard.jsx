@@ -8,6 +8,7 @@ import { Edit } from "../components/Edit"
 import { YouList } from "../components/YouList"
 import { List } from "../components/List"
 import { Setting } from "../components/setting"
+import api from "../services/api"
 
 function Dashboard(props) {
     const { userAuth } = useContext(AuthContext)
@@ -15,7 +16,11 @@ function Dashboard(props) {
     const [component, setComponent] = useState(props.component_render)
 
     function logout() {
-        setCookie(undefined, 'dashboard.token', userAuth._id, {
+        setCookie(undefined, 'dashboard_token', userAuth._id, {
+            maxAge: -1
+        })
+
+        setCookie(undefined, 'component_render', '', {
             maxAge: -1
         })
 
@@ -54,11 +59,13 @@ function Dashboard(props) {
         }   
     }
 
+    console.log(userAuth)
+
     return(
         <div className="h-full w-full">
-            <header className="w-full h-14 text-white flex items-center justify-between px-[2%] bg-slate-800 border-b-2 border-slate-900">
-                <div className="flex gap-3 items-center h-14">
-                    <div className={`flex flex-col gap-1 w-8 cursor-pointer p-1 z-50 relative transition-all ${menu === 'left-0' ? 'left-80' : 'left-4'}`} 
+            <header className="w-full z-10 fixed h-14 text-white flex items-center justify-between px-[2%] bg-slate-800 border-b-2 border-slate-900">
+                <div className="flex gap-3 items-center h-14 z-50">
+                    <div className={`flex flex-col gap-1 w-8 cursor-pointer p-1 transition-all relative ${menu === 'left-0' ? 'left-80' : 'left-4'}`} 
                         onClick={() => {
                             if(menu === '-left-96'){
                                 setMenu('left-0')
@@ -78,20 +85,35 @@ function Dashboard(props) {
                 </div>
             </header>
 
-            <div className={`w-96 h-[100vh] bg-slate-900 absolute flex flex-col top-0 ${menu} transition-all pt-14 z-30`}>
-                <Switch
-                    checked={theme == 'dark'}
-                    onChange={toggleTheme}
-                        className={`${
-                            theme == 'dark' ? 'bg-blue-600' : 'bg-gray-200'
-                        } absolute top-5 left-5 inline-flex h-6 w-11 items-center rounded-full`}
-                    >
-                    <span
-                        className={`${
-                            theme == 'light' ? 'translate-x-6' : 'translate-x-1'
-                        } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                    />
-                </Switch>
+            <div className={`w-96 h-full z-50 bg-slate-900 fixed flex flex-col top-0 ${menu} transition-all pt-14`}>
+                <div className="flex absolute top-5 left-5">
+                    <Switch
+                        checked={theme == 'dark'}
+                        onChange={toggleTheme}
+                            className={`${
+                                theme == 'dark' ? 'bg-blue-600' : 'bg-gray-200'
+                            }  inline-flex h-6 w-11 items-center rounded-full`}
+                        >
+                        <span
+                            className={`${
+                                theme == 'light' ? 'translate-x-6' : 'translate-x-1'
+                            } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                        />
+                    </Switch>
+                    <div className={`flex flex-col gap-1 w-8 cursor-pointer p-1 transition-all relative ${menu === 'left-0' ? 'left-[270px]' : 'left-4'}`} 
+                            onClick={() => {
+                                if(menu === '-left-96'){
+                                    setMenu('left-0')
+                                }else{
+                                    setMenu('-left-96')
+                                }
+                            }}
+                        >
+                            <div className={`w-full h-[1px] bg-white relative transition-all ${menu === 'left-0' ? 'rotate-45 top-[5px]' : 'rotate-0'}`}></div>
+                            <div className={`w-full h-[1px] bg-white transition-all ${menu === 'left-0' ? 'hidden' : 'block'}`}></div>
+                            <div className={`w-full h-[1px] bg-white transition-all ${menu === 'left-0' ? '-rotate-45' : 'rotate-0'}`}></div>
+                    </div>
+                </div>
                 <div className="w-full flex flex-col items-center mb-8">
                     <div className="w-24 h-24 bg-white rounded-full mb-2 bg-[url(/images/perfil.png)] bg-cover"></div>
                     <p className="text-white">{ userAuth.username }</p>
@@ -187,7 +209,7 @@ function Dashboard(props) {
 export default Dashboard
 
 export const getServerSideProps = async (ctx) => {
-    const { 'dashboard.token': token } = parseCookies(ctx)
+    const { 'dashboard_token': token } = parseCookies(ctx)
     const cookies = parseCookies(ctx)
 
     if(!token){
@@ -210,7 +232,8 @@ export const getServerSideProps = async (ctx) => {
     return {
         props: {
             USER_THEME: cookies.USER_THEME,
-            component_render: cookies.component_render
+            component_render: cookies.component_render,
+            dashboard_token: token
         }
     }
 }

@@ -14,7 +14,7 @@ export default function AuthProvider({ children }) {
 
     useEffect(() => {
         async function nameUser() {
-            const { 'dashboard.token': token } = parseCookies()
+            const { 'dashboard_token': token } = parseCookies()
 
             if(token){
                 const {data: {user}} = await api.post('user', { token })
@@ -30,7 +30,7 @@ export default function AuthProvider({ children }) {
         try{
             const { data: {user} } = await api.post('login', { username, password })
 
-            setCookie(undefined, 'dashboard.token', user._id, {
+            setCookie(undefined, 'dashboard_token', user._id, {
                 maxAge: 60 * 60 * 60 // 24 hours
             })
 
@@ -50,7 +50,7 @@ export default function AuthProvider({ children }) {
         try{
             const { data: {user} } = await api.post('users', { username, password, email })
 
-            setCookie(undefined, 'dashboard.token', user._id, {
+            setCookie(undefined, 'dashboard_token', user._id, {
                 maxAge: 60 * 60 * 24 // 24 hours
             })
     

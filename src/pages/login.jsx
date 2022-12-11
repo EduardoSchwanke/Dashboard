@@ -144,7 +144,7 @@ function Login(props) {
 export default Login
 
 export const getServerSideProps = async (ctx) => {
-    const { 'dashboard.token': token } = parseCookies(ctx)
+    const { 'dashboard_token': token } = parseCookies(ctx)
     const cookies = parseCookies(ctx)
 
     if(token){

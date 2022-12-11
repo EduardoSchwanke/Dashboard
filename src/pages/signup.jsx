@@ -148,7 +148,7 @@ export default Login
 export const getServerSideProps = async (ctx) => {
     const cookies = parseCookies(ctx)
 
-    if(!cookies){
+    if(cookies.USER_THEME === undefined){
         return{
             props: {
 
