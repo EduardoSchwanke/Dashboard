@@ -8,7 +8,6 @@ import { Edit } from "../components/Edit"
 import { YouList } from "../components/YouList"
 import { List } from "../components/List"
 import { Setting } from "../components/setting"
-import api from "../services/api"
 
 function Dashboard(props) {
     const { userAuth } = useContext(AuthContext)
@@ -59,7 +58,7 @@ function Dashboard(props) {
         }   
     }
 
-    console.log(userAuth)
+    
 
     return(
         <div className="h-full w-full">
@@ -119,7 +118,7 @@ function Dashboard(props) {
                     <p className="text-white">{ userAuth.username }</p>
                 </div>
                 
-                <div className="flex flex-col justify-evenly text-white h-[60vh]">
+                <div className="flex flex-col justify-evenly text-white h-[45vh]">
                     <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => {
                         setComponent('create') 
                         setMenu('-left-96')
@@ -140,17 +139,6 @@ function Dashboard(props) {
                         })
                     }}>
                         <p>Edit</p>
-                        <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
-                    </div>
-                    <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => {
-                        setComponent('youlist')
-                        setMenu('-left-96')
-                        setCookie(null, 'component_render', 'youlist', {
-                            maxAge: 60 * 60 * 24,
-                            path: '/'
-                        })
-                    }}>
-                        <p>You list</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
                     </div>
                     <div className="cursor-pointer hover:bg-slate-700 px-6 pt-4" onClick={() => {

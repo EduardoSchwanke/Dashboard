@@ -4,7 +4,7 @@ import { AuthContext } from "../contexts/AuthContext"
 import api from "../services/api";
 import { BiDownArrow, BiUpArrow } from "react-icons/bi";
 import Router from "next/router";
-import { destroyCookie, setCookie } from "nookies";
+import { destroyCookie } from "nookies";
 
 export function Setting() {
     const { userAuth } = useContext(AuthContext)

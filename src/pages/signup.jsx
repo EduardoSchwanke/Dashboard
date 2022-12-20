@@ -32,6 +32,10 @@ function Login(props) {
     }
     useEffect(() => {
         document.documentElement.classList.add(props.USER_THEME);
+        setCookie(null, 'USER_THEME', 'light', {
+            maxAge: 60 * 60 * 24,
+            path: '/'
+        })
     }, [])
 
     function toggleTheme() {
