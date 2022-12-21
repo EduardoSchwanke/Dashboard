@@ -17,8 +17,6 @@ export function Create() {
                 
                 <div className="w-full flex flex-col">
 
-                    <input type="file" name="" id="" />
-
                     <div className="my-2">
                         <label htmlFor="text" className="dark:text-white">Titulo</label>
                         <input type="text" name="text" required id="text" className="mb-6 w-full rounded-sm"/>
@@ -36,19 +34,17 @@ export function Create() {
                         initialValue='<p>This is the initial content of the editor.</p>'
                         init={{
                         height: 500,
-                        menubar: false,
-                        plugins: [
-                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
-                            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                            'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount'
-                        ],
-                        toolbar: 'undo redo | blocks | ' +
-                            'bold italic forecolor | alignleft aligncenter ' +
-                            'alignright alignjustify | bullist numlist outdent indent | ' +
-                            'removeformat | help',
-                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                        skin: 'snow',
+                        icons: 'thin',
+                        plugins: 'quickbars image lists code table codesample',
+                        toolbar: 'blocks | forecolor backcolor | bold italic underline strikethrough | link image blockquote codesample | align bullist numlist | code ',
+                        content_style: 'body { margin: 2rem 10%; }'
                         }}
                     />
+
+                    <div dangerouslySetInnerHTML={{__html: post}}>
+                        
+                    </div>
                 </div>
 
                 <div className="w-full h-20 fixed bottom-0 right-0 bg-gray-100 flex items-center justify-end px-7 gap-6 dark:bg-gray-100">
