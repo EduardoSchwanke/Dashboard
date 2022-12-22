@@ -36,6 +36,10 @@ function Login(props) {
             maxAge: 60 * 60 * 24,
             path: '/'
         })
+        setCookie(null, 'component_render', 'create', {
+            maxAge: 60 * 60 * 24,
+            path: '/'
+        })
     }, [])
 
     function toggleTheme() {

@@ -92,7 +92,7 @@ export function Setting() {
                 Delete account {deleted ? <BiDownArrow className="relative top-[2px] text-sm"/> : <BiUpArrow className="relative top-[2px] text-sm"/>}
             </div>
             <div className={`ml-2 mt-1 ${deleted ? 'block' : 'hidden'} transition-all`}>
-                <label htmlFor="" className="flex mb-1">Para deletar sua conta escreva "Quero deletar" exatamente como estar escrito!</label>
+                <label htmlFor="" className="flex mb-1">Para deletar sua conta escreva "Quero deletar"</label>
                 <input type="text" name="" id="" placeholder="Quero deletar" className="rounded-sm" onChange={({target}) => {
                     setInputDelete(target.value)
                 }}/>

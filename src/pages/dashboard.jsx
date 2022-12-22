@@ -5,7 +5,6 @@ import Router from "next/router"
 import { Switch } from "@headlessui/react"
 import { Create } from "../components/Create"
 import { Edit } from "../components/Edit"
-import { YouList } from "../components/YouList"
 import { List } from "../components/List"
 import { Setting } from "../components/setting"
 
@@ -57,8 +56,6 @@ function Dashboard(props) {
             setTheme('light')
         }   
     }
-
-    
 
     return(
         <div className="h-full w-full">
@@ -147,7 +144,7 @@ function Dashboard(props) {
                         setCookie(null, 'component_render', 'list', {
                             maxAge: 60 * 60 * 24,
                             path: '/'
-                        })
+                        }) 
                     }}>
                         <p>List</p>
                         <div className="w-full h-[1px] bg-slate-500 mt-2"></div>
@@ -176,9 +173,6 @@ function Dashboard(props) {
                     }
                     {
                         (component === 'edit') && <Edit/>
-                    }
-                    {
-                        (component === 'youlist') && <YouList/>
                     }
                     {
                         (component === 'list') && <List/>
