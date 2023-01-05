@@ -7,14 +7,15 @@ export function Create() {
     const editorRef = useRef(null);
     const [content, setContent] = useState()
     const [title, setTitle] = useState()
+    const [subtitle, setSubTitle] = useState()
 
     const { 'dashboard_token': auth } = parseCookies()
 
     async function createPost(e) {
         e.preventDefault()
-        console.log({ auth, title, content })
+        console.log({ auth, title, subtitle, content })
         try{
-            await api.post(`post`, { auth, title, content })
+            await api.post(`post`, { auth, title, subtitle, content })
             alert('post criado com sucesso')
         }catch(err){
             alert(err)
@@ -28,11 +29,25 @@ export function Create() {
                 
                 <div className="w-full flex flex-col">
 
-                    <div className="my-2">
+                    <div className="">
                         <label htmlFor="text" className="dark:text-white">Titulo</label>
                         <input type="text" name="text" required id="text" className="mb-6 w-full rounded-sm" onChange={(e) => {
                             setTitle(e.target.value)
                         }}/>
+                        
+                    </div>
+
+                    <div className="">
+                        <label htmlFor="text" className="dark:text-white">Sub-Título</label>
+                        <input type="text" name="text" required id="text" className="mb-6 w-full rounded-sm" onChange={(e) => {
+                            setSubTitle(e.target.value)
+                        }}/>
+                        
+                    </div>
+
+                    <div className="">
+                        <label htmlFor="text" className="dark:text-white">thumbnail: </label>
+                        <input type="file" name="" id="" />
                         
                     </div>
 
@@ -49,7 +64,7 @@ export function Create() {
                         skin: 'snow',
                         icons: 'thin',
                         plugins: 'quickbars image lists code table codesample',
-                        toolbar: 'blocks | forecolor backcolor | bold italic underline strikethrough | link image blockquote codesample | align bullist numlist | code ',
+                        toolbar: 'blocks | forecolor backcolor | bold italic underline strikethrough | link image blockquote | align bullist numlist ',
                         content_style: 'body { margin: 2rem 10%; }'
                         }}
                     />

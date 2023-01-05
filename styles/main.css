@@ -5,3 +5,27 @@
 h1{
     font-size: 30px;
 }
+
+h2{
+    font-size: 29px;
+}
+
+h3{
+    font-size: 28px;
+}
+
+h4{
+    font-size: 27px;
+}
+
+h5{
+    font-size: 26px;
+}
+
+h6{
+    font-size: 25px;
+}
+
+.Shadowlogin{
+    box-shadow: inset 2px 2px 74px 10px rgba(0,0,0,0.75);
+}

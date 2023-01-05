@@ -49,7 +49,7 @@ function Auth(props) {
 
     return(
         <div className="flex dark:bg-slate-800">
-            <div className="w-[50vw] h-[100vh] bg-[url(/images/bg-auth.jpg)] rounded-r-3xl lg:w-[40%] md:w-[30%] sm:w-0"></div>
+            <div className={`w-[50vw] h-[100vh] bg-[url(/images/bg-auth.jpg)] rounded-r-3xl lg:w-[40%] md:w-[30%] sm:w-0 ${(theme === 'light') ? 'shadow-none' : 'Shadowlogin'}`}></div>
             <div className="w-[50vw] h-[100vh] flex items-center justify-center lg:w-[60%] md:w-[70%] sm:w-full">
             <Switch
                     checked={theme == 'dark'}

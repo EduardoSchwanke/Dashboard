@@ -26,15 +26,15 @@ function Login(props) {
         if(!data.password){
             data.password = password
         }
+        setCookie(null, 'USER_THEME', 'light', {
+            maxAge: 60 * 60 * 24,
+            path: '/'
+        })
         await signIn(data)
     }
 
     useEffect(() => {
         document.documentElement.classList.add(props.USER_THEME);
-        setCookie(null, 'USER_THEME', 'light', {
-            maxAge: 60 * 60 * 24,
-            path: '/'
-        })
         setCookie(null, 'component_render', 'create', {
             maxAge: 60 * 60 * 24,
             path: '/'
@@ -63,7 +63,7 @@ function Login(props) {
 
     return(
         <div className="flex dark:bg-slate-800">
-            <div className="w-[50vw] h-[100vh] bg-[url(/images/bg-auth.jpg)] rounded-r-3xl lg:w-[40%] md:w-[30%] sm:w-0"></div>
+            <div className={`w-[50vw] h-[100vh] bg-[url(/images/bg-auth.jpg)] rounded-r-3xl lg:w-[40%] md:w-[30%] sm:w-0 ${(theme === 'light') ? 'shadow-none' : 'Shadowlogin'}`}></div>
             <div className="w-[50vw] h-[100vh] flex items-center justify-center lg:w-[60%] md:w-[70%] sm:w-full">
                 <Switch
                     checked={theme == 'dark'}
